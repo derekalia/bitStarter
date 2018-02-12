@@ -1,7 +1,7 @@
 pragma solidity ^0.4.17;
 
 
-contract CampaignFactory{
+contract CampaignFactory {
     address[] public deployedCampaigns;
     
     function createCampaigns(uint minimum) public {
@@ -15,7 +15,7 @@ contract CampaignFactory{
 }
 
 contract Campaign {
-    struct Request{
+    struct Request {
         string description;
         uint value;
         address recipient;
@@ -58,7 +58,7 @@ contract Campaign {
     }
     
     //called when someone wants to donate money to the campaign and become an approver
-    function contribute() public payable{
+    function contribute() public payable {
         require(msg.value > minimumContribution);
         
         // approvers.push(msg.sender);
@@ -68,7 +68,7 @@ contract Campaign {
     }
     
     //called by the manager to create a new 'spending request'
-    function createRequest(string description, uint value, address recipient) public restricted{
+    function createRequest(string description, uint value, address recipient) public restricted {
         //create a new request
         Request memory newRequest = Request({
             description: description,
@@ -95,7 +95,7 @@ contract Campaign {
     function finializeRequest(uint index) public restricted {
         Request storage request = requests[index];
         
-        require(request.approvalCount > (approversCount /2));
+        require(request.approvalCount > (approversCount/2));
         require(!request.complete);
         
         request.recipient.transfer(request.value);
